@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.sunyunmiao.qfc.contentcounter.mapper.RecordMapper">
+    <resultMap id="BaseResultMap" type="record">
+        <!--<id column="id" property="id" jdbcType="INTEGER"/>-->
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="count_character" property="count_character" javaType="int" jdbcType="INTEGER"/>
+        <result column="count_chinese" property="count_chinese" jdbcType="INTEGER"/>
+        <!--<result column="count_character" property="countCharacter" javaType="int" jdbcType="INTEGER"/>-->
+        <!--<result column="count_chinese" property="countChinese" jdbcType="INTEGER"/>-->
+        <result column="count_english" property="countEnglish" jdbcType="INTEGER"/>
+        <result column="count_punctuation" property="countPunctuation" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <!--<resultMap id="ResultMapWithBLOBs" type="com.crow.ssm.po.Items" extends="BaseResultMap">-->
+    <!--<result column="detail" property="detail" jdbcType="LONGVARCHAR"/>-->
+    <!--</resultMap>-->
+    <!--
+        <sql id="Example_Where_Clause">
+            <where>
+                <foreach collection="oredCriteria" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criteria" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </sql>
+    -->
+
+    <!--
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+-->
+
+    <sql id="Base_Column_List">
+        url,
+        title,
+        count_character AS countCharacter,
+        count_chinese AS countChinese,
+        count_english AS countEnglish,
+        count_punctuation AS countPunctuation,
+        update_time AS updateTime
+    </sql>
+
+    <!--
+    <sql id="Blob_Column_List">
+        detail
+    </sql>
+    -->
+
+    <!--
+        <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.crow.ssm.po.ItemsExample">
+            select
+            <if test="distinct">
+                distinct
+            </if>
+            <include refid="Base_Column_List"/>
+            ,
+            <include refid="Blob_Column_List"/>
+            from items
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+            <if test="orderByClause != null">
+                order by ${orderByClause}
+            </if>
+        </select>
+    -->
+    <!--
+        <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.crow.ssm.po.ItemsExample">
+            select
+            <if test="distinct">
+                distinct
+            </if>
+            <include refid="Base_Column_List"/>
+            from items
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+            <if test="orderByClause != null">
+                order by ${orderByClause}
+            </if>
+        </select>
+    -->
+
+    <select id="selectByUrl" resultType="record" parameterType="java.lang.String">
+        -- if exists (select * from tableName where conditions) select '1' else select '0'
+        select
+        <include refid="Base_Column_List"/>
+        from query
+        where url = #{url,jdbcType=VARCHAR}
+    </select>
+
+    <!--
+        <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+            delete from items
+            where id = #{id,jdbcType=INTEGER}
+        </delete>
+    -->
+    <!--
+        <delete id="deleteByExample" parameterType="com.crow.ssm.po.ItemsExample">
+            delete from items
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+        </delete>
+    -->
+    <insert id="insert" parameterType="record">
+        insert into query (
+        url, title,
+        count_character, count_chinese, count_english, count_punctuation,
+        update_time
+        )
+        values (
+
+        #{url,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+        #{countCharacter,jdbcType=INTEGER},#{countChinese,jdbcType=INTEGER},
+        #{countEnglish,jdbcType=INTEGER},#{countPunctuation,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <!--
+        <insert id="insertSelective" parameterType="com.crow.ssm.po.Items">
+            insert into items
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    id,
+                </if>
+                <if test="name != null">
+                    name,
+                </if>
+                <if test="price != null">
+                    price,
+                </if>
+                <if test="pic != null">
+                    pic,
+                </if>
+                <if test="updateTime != null">
+                    updateTime,
+                </if>
+                <if test="detail != null">
+                    detail,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">
+                    #{id,jdbcType=INTEGER},
+                </if>
+                <if test="name != null">
+                    #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="price != null">
+                    #{price,jdbcType=REAL},
+                </if>
+                <if test="pic != null">
+                    #{pic,jdbcType=VARCHAR},
+                </if>
+                <if test="updateTime != null">
+                    #{updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="detail != null">
+                    #{detail,jdbcType=LONGVARCHAR},
+                </if>
+            </trim>
+        </insert>
+    -->
+
+    <!--
+        <select id="countByExample" parameterType="com.crow.ssm.po.ItemsExample" resultType="java.lang.Integer">
+            select count(*) from items
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+        </select>
+    -->
+
+    <!--
+        <update id="updateByExampleSelective" parameterType="map">
+            update items
+            <set>
+                <if test="record.id != null">
+                    id = #{record.id,jdbcType=INTEGER},
+                </if>
+                <if test="record.name != null">
+                    name = #{record.name,jdbcType=VARCHAR},
+                </if>
+                <if test="record.price != null">
+                    price = #{record.price,jdbcType=REAL},
+                </if>
+                <if test="record.pic != null">
+                    pic = #{record.pic,jdbcType=VARCHAR},
+                </if>
+                <if test="record.updateTime != null">
+                    updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="record.detail != null">
+                    detail = #{record.detail,jdbcType=LONGVARCHAR},
+                </if>
+            </set>
+            <if test="_parameter != null">
+                <include refid="Update_By_Example_Where_Clause"/>
+            </if>
+        </update>
+    -->
+
+    <!--
+        <update id="updateByExampleWithBLOBs" parameterType="map">
+            update items
+            set id = #{record.id,jdbcType=INTEGER},
+            name = #{record.name,jdbcType=VARCHAR},
+            price = #{record.price,jdbcType=REAL},
+            pic = #{record.pic,jdbcType=VARCHAR},
+            updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
+            detail = #{record.detail,jdbcType=LONGVARCHAR}
+            <if test="_parameter != null">
+                <include refid="Update_By_Example_Where_Clause"/>
+            </if>
+        </update>
+-->
+    <update id="updateByUrl" parameterType="record">
+            update query
+            set
+            url = #{url,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            count_character = #{countCharacter,jdbcType=INTEGER},
+            count_chinese = #{countChinese,jdbcType=INTEGER},
+            count_english = #{countEnglish,jdbcType=INTEGER},
+            count_punctuation = #{countPunctuation,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+            where url = #{url,jdbcType=VARCHAR}
+    </update>
+    <!--
+            <update id="updateByPrimaryKeySelective" parameterType="com.crow.ssm.po.Items">
+                update items
+                <set>
+                    <if test="name != null">
+                        name = #{name,jdbcType=VARCHAR},
+                    </if>
+                    <if test="price != null">
+                        price = #{price,jdbcType=REAL},
+                    </if>
+                    <if test="pic != null">
+                        pic = #{pic,jdbcType=VARCHAR},
+                    </if>
+                    <if test="updateTime != null">
+                        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="detail != null">
+                        detail = #{detail,jdbcType=LONGVARCHAR},
+                    </if>
+                </set>
+                where id = #{id,jdbcType=INTEGER}
+            </update>
+            <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.crow.ssm.po.Items">
+                update items
+                set name = #{name,jdbcType=VARCHAR},
+                price = #{price,jdbcType=REAL},
+                pic = #{pic,jdbcType=VARCHAR},
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+                detail = #{detail,jdbcType=LONGVARCHAR}
+                where id = #{id,jdbcType=INTEGER}
+            </update>
+            <update id="updateByPrimaryKey" parameterType="com.crow.ssm.po.Items">
+                update items
+                set name = #{name,jdbcType=VARCHAR},
+                price = #{price,jdbcType=REAL},
+                pic = #{pic,jdbcType=VARCHAR},
+                updateTime = #{updateTime,jdbcType=TIMESTAMP}
+                where id = #{id,jdbcType=INTEGER}
+            </update>
+        -->
+
+    <!-- 定义商品查询的sql片段，就是商品查询条件
+        <sql id="query_record">
+            &lt;!&ndash; 使用动态sql，通过if判断，满足条件进行sql拼接 &ndash;&gt;
+            &lt;!&ndash; 商品查询条件通过ItemsQueryVo包装对象 中itemsCustom属性传递 &ndash;&gt;
+            <if test="itemsCustom!=null">
+                <if test="itemsCustom.name!=null and itemsCustom.name!=''">
+                    items.name LIKE '%${itemsCustom.name}%'
+                </if>
+            </if>
+
+        </sql>
+    -->
+
+    <!-- 商品列表查询 -->
+    <!-- parameterType传入包装对象(包装了查询条件)
+        resultType建议使用扩展对象
+     -->
+    <select id="selectAll" resultType="record">
+        SELECT
+        --
+        <include refid="Base_Column_List"/>
+        FROM query
+        ORDER BY update_time DESC
+        <!--<where>-->
+        <!--<include refid="query_items_where"></include>-->
+        <!--</where>-->
+    </select>
+
+</mapper>

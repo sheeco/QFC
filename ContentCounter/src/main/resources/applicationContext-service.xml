@@ -1,0 +1,9 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- record管理的service -->
+    <bean id="recordService" class="pers.sunyunmiao.qfc.contentcounter.service.RecordServiceImpl"/>
+    <bean id="countService" class="pers.sunyunmiao.qfc.contentcounter.service.CountServiceImpl"/>
+
+</beans>
